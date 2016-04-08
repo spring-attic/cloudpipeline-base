@@ -1,0 +1,55 @@
+---
+
+jobs:
+- name: build-ship-it
+  serial: true
+  public: true
+  plan:
+  - aggregate:
+    - get: alpine-docker-image
+      trigger: true
+      params:
+        skip_download: true
+    - get: alpine-bash-git
+      trigger: true
+  - put: version
+    params: {bump: minor}
+  - put: alpine-bash-docker-image
+    params:
+      build: alpine-bash-git/
+      tag: version/number
+  - put: alpine-bash-git 
+    params: 
+      only_tag: true
+      repository: alpine-bash-git
+      tag: version/number
+
+resources:
+- name: alpine-bash-git
+  type: git
+  source:
+    uri: git@github.com:shinji62/alpine-docker-bash-git.git
+    branch: master
+    private_key: {{private-key-github-concourse}}
+
+- name: alpine-bash-docker-image
+  type: docker-image
+  source:
+    repository: getourneau/alpine-bash-git
+    email: {{email-docker-hub}}
+    username: {{username-docker-hub}}
+    password: {{password-docker-hub}}
+
+- name: alpine-docker-image
+  type: docker-image
+  source:
+    repository: alpine
+
+- name: version
+  type: semver
+  source:
+    driver: git
+    uri: git@github.com:shinji62/version-concourse.git
+    branch: master
+    file: alpine-docker-bash-git/version
+    private_key: {{private-key-github-concourse}}

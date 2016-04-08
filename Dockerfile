@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpine:latest
 
 MAINTAINER Gwenn Etourneau <gwenn.etourneau@gmail.com>
 
