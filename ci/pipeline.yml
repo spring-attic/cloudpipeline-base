@@ -20,7 +20,6 @@ jobs:
       tag: version/number
   - put: alpine-bash-git
     params:
-      only_tag: true
       repository: alpine-bash-git
       tag: version/number
 
