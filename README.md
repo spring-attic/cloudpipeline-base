@@ -1,2 +1,2 @@
-# alpine-docker-bash-git
-Alpine docker image with git and bash
+# alpine-java-bash-git
+Alpine docker image with openjdk and git and bash
