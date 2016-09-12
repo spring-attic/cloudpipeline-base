@@ -8,8 +8,8 @@ jobs:
   - aggregate:
     - get: alpine-docker-image
       trigger: true
-      params:
-        skip_download: true
+      # params:
+      #   skip_download: true
     - get: alpine-bash-git
       trigger: true
   - put: version
@@ -28,7 +28,7 @@ resources:
 - name: alpine-bash-git
   type: git
   source:
-    uri: git@github.com:making/alpine-java-docker-bash-git.git
+    uri: git@github.com:making/alpine-java-bash-git.git
     branch: master
     private_key: {{github-private-key}}
 
@@ -49,10 +49,9 @@ resources:
 - name: version
   type: semver
   source:
-    driver: git
-    uri: git@github.com:making/alpine-java-docker-bash-git.git
+    uri: git@github.com:making/alpine-java-bash-git.git
     branch: version
-    file: version
     private_key: {{github-private-key}}
+    file: version
     driver: git
-    initial_version: 0.4.0
+    initial_version: 0.9.0
