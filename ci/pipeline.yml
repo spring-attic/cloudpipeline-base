@@ -18,8 +18,8 @@ jobs:
     params:
       build: alpine-bash-git/
       tag: version/number
-  - put: alpine-bash-git 
-    params: 
+  - put: alpine-bash-git
+    params:
       only_tag: true
       repository: alpine-bash-git
       tag: version/number
@@ -30,15 +30,15 @@ resources:
   source:
     uri: git@github.com:making/alpine-java-docker-bash-git.git
     branch: master
-    private_key: {{private-key-github-concourse}}
+    private_key: {{github-private-key}}
 
 - name: alpine-bash-docker-image
   type: docker-image
   source:
-    repository: making/alpine-java-docker-bash-git
-    email: {{email-docker-hub}}
-    username: {{username-docker-hub}}
-    password: {{password-docker-hub}}
+    repository: {{docker-repo}}
+    email: {{docker-email}}
+    username: {{docker-username}}
+    password: {{docker-password}}
 
 - name: alpine-docker-image
   type: docker-image
@@ -53,6 +53,6 @@ resources:
     uri: git@github.com:making/alpine-java-docker-bash-git.git
     branch: version
     file: version
-    private_key: {{private-key-github-concourse}}
+    private_key: {{github-private-key}}
     driver: git
-    initial_version: 0.5.0
+    initial_version: 0.4.0
