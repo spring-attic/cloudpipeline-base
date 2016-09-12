@@ -18,6 +18,7 @@ jobs:
     params:
       build: alpine-bash-git/
       tag: version/number
+      tag_as_latest: true
   - put: alpine-bash-git
     params:
       repository: alpine-bash-git
