@@ -9,4 +9,5 @@ RUN apk add --update \
     tar \
     openssh-client \
     openssh \
-    zip
+    zip \
+    curl
