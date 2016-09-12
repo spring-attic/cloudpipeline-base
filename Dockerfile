@@ -1,6 +1,6 @@
-FROM alpine:latest
+FROM openjdk:8-jdk-alpine
 
-MAINTAINER Gwenn Etourneau <gwenn.etourneau@gmail.com>
+MAINTAINER Toshiaki Maki <tmaki@pivotal.io>
 
 RUN apk upgrade
 RUN apk add --update \
