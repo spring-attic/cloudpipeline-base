@@ -10,4 +10,5 @@ RUN apk add --update \
     openssh-client \
     openssh \
     zip \
-    curl
+    curl \
+    ruby
