@@ -1,19 +1,23 @@
-FROM openjdk:8-jdk-alpine
+FROM ubuntu:14.04
 
 MAINTAINER Toshiaki Maki <tmaki@pivotal.io>
 MAINTAINER Marcin Grzejszczak <mgrzejszczak@pivotal.io>
 
-RUN apk upgrade
-RUN apk add --update \
+ENV RUBY_VERSION 2.3.1
+ENV TERM dumb
+
+RUN apt-get -y update
+RUN apt-get -y install software-properties-common
+
+RUN apt-get -y update
+RUN apt-get -y install \
     bash \
     git \
     tar \
     openssh-client \
-    openssh \
     zip \
     curl \
     ruby \
-    software-properties-common \
     build-essential \
     wget \
     libssl-dev \
@@ -35,3 +39,8 @@ RUN apk add --update \
     x11-apps \
     libqtwebkit-dev \
     qt4-qmake
+
+RUN add-apt-repository ppa:webupd8team/java
+RUN apt-get -y update
+RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
+RUN apt-get -y install oracle-java8-installer
