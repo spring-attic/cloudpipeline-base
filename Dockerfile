@@ -38,7 +38,8 @@ RUN apt-get -y install \
     xfonts-cyrillic \
     x11-apps \
     libqtwebkit-dev \
-    qt4-qmake
+    qt4-qmake \
+    jq
 
 RUN add-apt-repository ppa:webupd8team/java
 RUN apt-get -y update
