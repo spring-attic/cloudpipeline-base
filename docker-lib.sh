@@ -79,11 +79,5 @@ start_docker() {
 }
 
 stop_docker() {
-  local pid=$(cat /tmp/docker.pid)
-  if [ -z "$pid" ]; then
-    return 0
-  fi
-
-  kill -TERM $pid
-  wait $pid
+  pkill -9 docker*
 }
