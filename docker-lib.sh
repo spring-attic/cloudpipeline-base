@@ -40,7 +40,7 @@ sanitize_cgroups() {
   done
 }
 
-start_docker() {
+ () {
   mkdir -p /var/log
   mkdir -p /var/run
 
@@ -79,5 +79,5 @@ start_docker() {
 }
 
 stop_docker() {
-  pkill -9 docker*
+  pkill -9 docker* || echo "Failed to kill docker"
 }
