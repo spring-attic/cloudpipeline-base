@@ -40,7 +40,7 @@ sanitize_cgroups() {
   done
 }
 
- () {
+ start_docker() {
   mkdir -p /var/log
   mkdir -p /var/run
 
