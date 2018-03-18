@@ -10,6 +10,10 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
 RUN export JAVA_HOME
 
+# Create a user that we can use besides root when building app
+RUN groupadd -g 999 appuser && \
+    useradd -r -u 999 -m -g appuser appuser
+
 RUN apt-get -y update
 RUN apt-get -y install \
     sudo \
