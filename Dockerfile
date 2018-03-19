@@ -7,7 +7,12 @@ ENV RUBY_VERSION 2.3.1
 ENV TERM dumb
 ENV ENTRYKIT_VERSION=0.4.0
 ENV DEBIAN_FRONTEND noninteractive
-ENV JAVA_HOME       /usr/lib/jvm/java-8-oracle
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
+RUN export JAVA_HOME
+
+# Create a user that we can use besides root when building app
+RUN groupadd -g 999 appuser && \
+    useradd -r -u 999 -m -g appuser appuser
 
 RUN apt-get -y update
 RUN apt-get -y install \
@@ -45,7 +50,7 @@ RUN apt-get -y install \
     apt-transport-https
 
 RUN wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
-RUN echo "deb http://packages.cloudfoundry.org/debian stable main" | tee /etc/apt/sources.list.d/cloudfoundry-cli.list
+RUN echo "deb https://packages.cloudfoundry.org/debian stable main" | tee /etc/apt/sources.list.d/cloudfoundry-cli.list
 
 RUN apt-get update && \
   apt-get dist-upgrade -y
@@ -53,13 +58,12 @@ RUN apt-get update && \
 ## Remove any existing JDKs
 RUN apt-get --purge remove openjdk*
 
-## Install Oracle's JDK
-RUN echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections
-RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" > /etc/apt/sources.list.d/webupd8team-java-trusty.list
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
 RUN apt-get update && \
-  apt-get install -y --no-install-recommends oracle-java8-installer && \
-  apt-get clean all
+	apt-get install -y openjdk-8-jdk && \
+	apt-get install -y ant && \
+	apt-get clean && \
+	rm -rf /var/lib/apt/lists/* && \
+	rm -rf /var/cache/oracle-jdk8-installer;
 
 RUN apt-get -y update
 RUN apt-get -y install \
