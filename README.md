@@ -13,8 +13,8 @@ Follow the instructions starting from [https://docs.docker.com/engine/getstarted
 $ docker build -t pipeline-base . --no-cache
 $ docker images
 // find the proper image e.g. 95610717ba45
-// pick proper version e.g. 0.6.0
-$ docker tag 95610717ba45 springcloud/pipeline-base:0.6.0
+// pick proper version e.g. 0.7.0
+$ docker tag 95610717ba45 springcloud/pipeline-base:0.7.0
 $ docker tag 95610717ba45 springcloud/pipeline-base:latest
 $ docker login
 $ docker push springcloud/pipeline-base

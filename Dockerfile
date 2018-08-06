@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM microsoft/dotnet:2.1-sdk
 
 MAINTAINER Toshiaki Maki <tmaki@pivotal.io>
 MAINTAINER Marcin Grzejszczak <mgrzejszczak@pivotal.io>
@@ -32,7 +32,6 @@ RUN apt-get -y install \
     libsqlite3-dev \
     libxslt1-dev \
     libpq-dev \
-    libmysqlclient-dev \
     bsdtar \
     unzip \
     python \
