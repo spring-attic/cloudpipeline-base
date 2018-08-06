@@ -98,7 +98,11 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN apt-get install -y nodejs
 
 # PHP
-RUN apt-get install -y php-common libapache2-mod-php php-cli
+ENV LANG=C.UTF-8
+RUN apt-get -y install python-software-properties
+RUN add-apt-repository -y ppa:ondrej/php
+RUN apt-get -y update && apt-get -y install php7.2
+RUN apt-get -y install php-pear php7.2-curl php7.2-dev php7.2-gd php7.2-mbstring php7.2-zip php7.2-mysql php7.2-xml
 
 ENTRYPOINT [ \
 	"switch", \
