@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.1-sdk
+FROM ubuntu:16.04
 
 MAINTAINER Toshiaki Maki <tmaki@pivotal.io>
 MAINTAINER Marcin Grzejszczak <mgrzejszczak@pivotal.io>
@@ -86,6 +86,19 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -y install apt-tran
 # Include useful functions to start/stop docker daemon in garden-runc containers in Concourse CI.
 # Example: source /docker-lib.sh && start_docker
 COPY docker-lib.sh /docker-lib.sh
+
+# DOTNET
+RUN wget -q https://packages.microsoft.com/config/ubuntu/16.04/packages-microsoft-prod.deb && dpkg -i packages-microsoft-prod.deb
+RUN apt-get -y install apt-transport-https
+RUN apt-get update
+RUN apt-get -y install dotnet-sdk-2.1
+
+# NODEJS
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
+RUN apt-get install -y nodejs
+
+# PHP
+RUN apt-get install -y php-common libapache2-mod-php php-cli
 
 ENTRYPOINT [ \
 	"switch", \
