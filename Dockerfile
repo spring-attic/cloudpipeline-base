@@ -1,14 +1,15 @@
-FROM ubuntu:16.04
+FROM ubuntu:19.04
 
 MAINTAINER Toshiaki Maki <tmaki@pivotal.io>
 MAINTAINER Marcin Grzejszczak <mgrzejszczak@pivotal.io>
+
+ARG SDKMAN_JAVA_INSTALLATION=8.0.222-zulu
+ARG UBUNTU_VERSION=19.04
 
 ENV RUBY_VERSION 2.3.1
 ENV TERM dumb
 ENV ENTRYKIT_VERSION=0.4.0
 ENV DEBIAN_FRONTEND noninteractive
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
-RUN export JAVA_HOME
 
 # Create a user that we can use besides root when building app
 RUN groupadd -g 999 appuser && \
@@ -57,12 +58,15 @@ RUN apt-get update && \
 ## Remove any existing JDKs
 RUN apt-get --purge remove openjdk*
 
-RUN apt-get update && \
-	apt-get install -y openjdk-8-jdk && \
-	apt-get install -y ant && \
-	apt-get clean && \
-	rm -rf /var/lib/apt/lists/* && \
-	rm -rf /var/cache/oracle-jdk8-installer;
+# Install sdkman and java
+RUN curl -s https://get.sdkman.io/ | bash
+COPY sdkman.config /.sdkman/etc/config
+COPY sdkman/ /usr/local/bin/
+RUN /bin/bash -c "chmod +x /usr/local/bin/sdkman-exec.sh && chmod +x /usr/local/bin/sdkman-wrapper.sh && chmod +x /root/.sdkman/bin/sdkman-init.sh"
+RUN /bin/bash -c "source /root/.sdkman/bin/sdkman-init.sh"
+RUN sdkman-wrapper.sh install java "${SDKMAN_JAVA_INSTALLATION}"
+ENV JAVA_HOME /root/.sdkman/candidates/java/current/
+ENV PATH "${PATH}:${JAVA_HOME}/bin"
 
 RUN apt-get -y update
 RUN apt-get -y install \
@@ -88,7 +92,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -y install apt-tran
 COPY docker-lib.sh /docker-lib.sh
 
 # DOTNET
-RUN wget -q https://packages.microsoft.com/config/ubuntu/16.04/packages-microsoft-prod.deb && dpkg -i packages-microsoft-prod.deb
+RUN wget -q https://packages.microsoft.com/config/ubuntu/${UBUNTU_VERSION}/packages-microsoft-prod.deb && dpkg -i packages-microsoft-prod.deb
 RUN apt-get -y install apt-transport-https
 RUN apt-get update
 RUN apt-get -y install dotnet-sdk-2.1
@@ -99,7 +103,6 @@ RUN apt-get install -y nodejs
 
 # PHP
 ENV LANG=C.UTF-8
-RUN apt-get -y install python-software-properties
 RUN add-apt-repository -y ppa:ondrej/php
 RUN apt-get -y update && apt-get -y install php7.2
 RUN apt-get -y install php-pear php7.2-curl php7.2-dev php7.2-gd php7.2-mbstring php7.2-zip php7.2-mysql php7.2-xml
