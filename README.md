@@ -1,3 +1,5 @@
+# cloudpipeline-base is no longer actively maintained by VMware, Inc.
+
 # Pipeline-base
 
 [![](https://images.microbadger.com/badges/image/cloudpipelines/pipeline-base-git.svg)](https://microbadger.com/images/cloudpipelines/pipeline-base "Get your own image badge on microbadger.com")
